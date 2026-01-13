@@ -18,9 +18,9 @@ public class Demo11 {
 		Integer reduce = list.stream().reduce(0, (n1, n2) -> n1 > n2 ? n1 : n2);
 		System.out.println(reduce);
 
-		List<Employee> empList = Arrays.asList(new Employee(11), new Employee(1), new Employee(11));
+		List<EmployeeBean> empList = Arrays.asList(new EmployeeBean(11), new EmployeeBean(1), new EmployeeBean(11));
 		Set<Integer> set = new LinkedHashSet<>();
-		List<Employee> uniqueEmpList = empList.stream().filter(e -> set.add(e.getId())).collect(Collectors.toList());
+		List<EmployeeBean> uniqueEmpList = empList.stream().filter(e -> set.add(e.getId())).collect(Collectors.toList());
 		System.out.println(uniqueEmpList);
 	}
 }

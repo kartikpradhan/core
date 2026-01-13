@@ -7,10 +7,10 @@ import java.util.List;
 public class Demo15 {
 
 	public static void main(String[] args) {
-		List<Employee> empList = Arrays.asList(new Employee(1),
-				new Employee(3),
-				new Employee(5),
-				new Employee(1));
+		List<EmployeeBean> empList = Arrays.asList(new EmployeeBean(1),
+				new EmployeeBean(3),
+				new EmployeeBean(5),
+				new EmployeeBean(1));
 
 		List<Integer> nums=Arrays.asList(1,2,5,2);
 		nums.stream()

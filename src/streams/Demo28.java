@@ -1,183 +1,39 @@
 package streams;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Demo28 {
-	public static Collector<String, ?, Map<String, Object>> deepMergingJson() {
-
-		class Acc {
-			final Map<String, Object> root = new LinkedHashMap<>();
-
-			void add(String json) {
-				Object parsed = new JsonParser(json).parse();
-				if (!(parsed instanceof Map)) {
-					throw new IllegalArgumentException("Root must be JSON object");
-				}
-				merge(root, (Map<String, Object>) parsed);
-			}
-
-			Acc mergeAcc(Acc other) {
-				merge(root, other.root);
-				return this;
-			}
-		}
-
-		return Collector.of(Acc::new, Acc::add, Acc::mergeAcc, acc -> acc.root);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static void merge(Map<String, Object> target, Map<String, Object> source) {
-
-		for (var e : source.entrySet()) {
-			String key = e.getKey();
-			Object value = e.getValue();
-
-			if (!target.containsKey(key)) {
-				target.put(key, value);
-			} else {
-				Object existing = target.get(key);
-
-				if (existing instanceof Map && value instanceof Map) {
-					merge((Map<String, Object>) existing, (Map<String, Object>) value);
-				} else if (existing instanceof List && value instanceof List) {
-					((List<Object>) existing).addAll((List<Object>) value);
-				} else {
-					target.put(key, value); // overwrite
-				}
-			}
-		}
-	}
-
-	static class JsonParser {
-		private final String s;
-		private int i = 0;
-
-		JsonParser(String s) {
-			this.s = s.trim();
-		}
-
-		Object parse() {
-			skip();
-			Object v = value();
-			skip();
-			return v;
-		}
-
-		private Object value() {
-			skip();
-			char c = s.charAt(i);
-
-			if (c == '{')
-				return object();
-			if (c == '[')
-				return array();
-			if (c == '"')
-				return string();
-			if (c == 't')
-				return literal("true", true);
-			if (c == 'f')
-				return literal("false", false);
-			if (c == 'n')
-				return literal("null", null);
-			return number();
-		}
-
-		private Map<String, Object> object() {
-			expect('{');
-			Map<String, Object> map = new LinkedHashMap<>();
-			skip();
-			if (peek('}')) {
-				i++;
-				return map;
-			}
-
-			while (true) {
-				String key = string();
-				skip();
-				expect(':');
-				Object val = value();
-				map.put(key, val);
-				skip();
-				if (peek('}')) {
-					i++;
-					break;
-				}
-				expect(',');
-			}
-			return map;
-		}
-
-		private List<Object> array() {
-			expect('[');
-			List<Object> list = new ArrayList<>();
-			skip();
-			if (peek(']')) {
-				i++;
-				return list;
-			}
-
-			while (true) {
-				list.add(value());
-				skip();
-				if (peek(']')) {
-					i++;
-					break;
-				}
-				expect(',');
-			}
-			return list;
-		}
-
-		private String string() {
-			expect('"');
-			StringBuilder sb = new StringBuilder();
-			while (s.charAt(i) != '"') {
-				sb.append(s.charAt(i++));
-			}
-			i++;
-			return sb.toString();
-		}
-
-		private Object number() {
-			int start = i;
-			while (i < s.length() && "-0123456789.".indexOf(s.charAt(i)) >= 0)
-				i++;
-			String n = s.substring(start, i);
-			return n.contains(".") ? Double.valueOf(n) : Long.valueOf(n);
-		}
-
-		private Object literal(String lit, Object val) {
-			if (!s.startsWith(lit, i))
-				throw new RuntimeException("Expected " + lit);
-			i += lit.length();
-			return val;
-		}
-
-		private void skip() {
-			while (i < s.length() && Character.isWhitespace(s.charAt(i)))
-				i++;
-		}
-
-		private void expect(char c) {
-			if (s.charAt(i) != c)
-				throw new RuntimeException("Expected " + c);
-			i++;
-		}
-
-		private boolean peek(char c) {
-			return s.charAt(i) == c;
-		}
-	}
-
 	public static void main(String[] args) {
+		// Return the top 3 distinct largest numbers from a list.
 
-		Map<String, Object> result = List.of("{\"a\":1,\"b\":{\"x\":10}}", "{\"b\":{\"y\":20},\"c\":3}",
-				"{\"b\":{\"x\":99},\"d\":[1,2]}", "{\"d\":[3,4]}").stream().collect(deepMergingJson());
+		List<Integer> nums = Arrays.asList(10, 9, 15, 12, 5, 13);
+		List<Integer> top3Nums = nums.stream().sorted(Comparator.reverseOrder()).limit(3).toList();
+		System.out.println(top3Nums);
 
-		System.out.println(result);
+		// Find the longest word from a list (if tie, return first).
+		List<String> words = Arrays.asList("Mango", "Apple", "cucumber", "Appricot", "Guava");
+		String string = words.stream().reduce((w1, w2) -> w1.length() >= w2.length() ? w1 : w2).get();
+		System.out.println(string);
+
+		// Convert a list of sentences into a map of word → frequency.
+		List<String> sentences = Arrays.asList("How is the day", "It is sunny", "Had your breakfast",
+				"Yes I had but the quantity is small");
+		Map<String, Long> collect = sentences.stream().flatMap(s -> Arrays.stream(s.split("\\s")))
+				.collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+		System.out.println(collect);
+
+		//Partition numbers into prime and non-prime using streams.
+		List<Integer> numbers = Arrays.asList(10, 9, 15, 12, 5, 13);
+		Map<Boolean, List<Integer>> collect2 = numbers.stream().collect(Collectors.partitioningBy(n->isPrime(n)));
+		System.out.println(collect2);
+	}
+
+	private static boolean isPrime(int i) {
+		return IntStream.range(2, i).noneMatch(n -> i % n == 0);
 	}
 }
