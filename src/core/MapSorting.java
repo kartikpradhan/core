@@ -14,11 +14,12 @@ public class MapSorting {
 		map.put("C", 25);
 		map.put("Q", 1);
 		map.put("M", 10);
+		map.put("M", 12);
 		
 		Map<String, Integer> map2 = map.entrySet().
 				stream().
 				sorted(Map.Entry.comparingByValue()).
-				collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+				collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1,
 		                LinkedHashMap::new));
 		
 		System.out.println(map2);

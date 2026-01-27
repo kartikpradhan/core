@@ -13,7 +13,8 @@ public class Prie {
 				.boxed()
 				.collect(Collectors.toList());
 		System.out.println(list);
-		//IntStream.rangeClosed(2, 20).forEach(System.out::println);
+		//IntStream.range(2, 10).forEach(System.out::println);
+		
 	}
 
 	private static boolean isPrime(int i) {
