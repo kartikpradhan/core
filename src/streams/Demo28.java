@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 public class Demo28 {
 	public static void main(String[] args) {
 		// Return the top 3 distinct largest numbers from a list.
@@ -15,7 +16,7 @@ public class Demo28 {
 		List<Integer> top3Nums = nums.stream().sorted(Comparator.reverseOrder()).limit(3).toList();
 		System.out.println(top3Nums);
 
-		// Find the longest word from a list (if tie, return first).
+		// Find the longest word from a list (if tie, return first).Node prev = null;
 		List<String> words = Arrays.asList("Mango", "Apple", "cucumber", "Appricot", "Guava");
 		String string = words.stream().reduce((w1, w2) -> w1.length() >= w2.length() ? w1 : w2).get();
 		System.out.println(string);

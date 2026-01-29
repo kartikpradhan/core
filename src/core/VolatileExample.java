@@ -1,7 +1,7 @@
 package core;
 
 public class VolatileExample extends Thread {
-	private volatile boolean running = true;
+	private boolean running = true;
 
 	public void run() {
 		while (running) {
@@ -18,7 +18,7 @@ public class VolatileExample extends Thread {
 	public static void main(String[] args) throws InterruptedException {
 		VolatileExample thread = new VolatileExample();
 		thread.start();
-		Thread.sleep(1000);
+		Thread.sleep(1);
 		thread.stopRunning();
 		//thread.join();
 	}

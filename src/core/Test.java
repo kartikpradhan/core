@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Test {
 	public static void main(String[] args) {
-		System.out.println("test");
 		 Queue<String> pq = new PriorityQueue<>();
 		 
 	        pq.add("Geeks");
@@ -44,14 +43,16 @@ public class Test {
 	        lhs.add(null);
 	        lhs.add(null);
 	        lhs.add(null);
-	        System.out.println(lhs);
+	        lhs.add(null);
+	        lhs.add(null);
+	        System.out.println("LinkedHashSet null: "+lhs);
 	        
 	        
 	        HashSet hs = new HashSet<>();
 	        hs.add(null);
 	        hs.add(null);
 	        hs.add(null);
-	        System.out.println(hs);
+	        System.out.println("HashSet null: "+hs);
 	        
 	        Map<String, String> map=new HashMap<>();
 	        map.put(null, null);
@@ -66,7 +67,7 @@ public class Test {
 	        System.out.println(intlist);
 	        
 	        Hashtable<String, String> ht=new Hashtable<>();
-	       // ht.put("t", null); //NPE
+	       //ht.put("t", null); //NPE
 	        
 	        Map m=new HashMap();
 	        Map m2 = Collections.synchronizedMap(m);

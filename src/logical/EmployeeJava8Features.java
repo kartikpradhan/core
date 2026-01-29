@@ -84,22 +84,23 @@ public class EmployeeJava8Features {
 
 		// 1. Get all contacts number
 		List<Integer> contacts = employees.stream().flatMap(e -> e.getContacts().stream()).toList();
-		System.out.println(contacts);
+		System.out.println("contacts::"+contacts);
 
 		// 2. find employees who is having more than 1 contact
-		List<String> moreThan1Contacts = employees.stream().filter(e -> e.getContacts().size() > 1)
+		List<String> moreThan1Contacts = employees.stream()
+				.filter(e -> e.getContacts().size() > 1)
 				.map(e -> e.getName()).toList();
-		System.out.println(moreThan1Contacts);
+		System.out.println("moreThan1Contacts: "+moreThan1Contacts);
 
 		// 3. Increase salary by 10% (immutable)
 		List<EmployeeTest> salaryIncreased1 = employees.stream().map(
 				e -> new EmployeeTest(e.getId(), e.getName(), e.getSalary() * 1.10, e.getDepartment(), e.getContacts()))
 				.toList();
-		System.out.println(salaryIncreased1);
+		System.out.println("salaryIncreasedBy 10%: "+salaryIncreased1);
 
 		// 4. Increase salary by 10% for the original object (mutable)
 		List<EmployeeTest> salaryIncreased2 = employees.stream().peek(e -> e.salary = e.getSalary() * 1.10).toList();
-		System.out.println(salaryIncreased2);
+		System.out.println("salaryIncreased by 10% mutable to original object: "+salaryIncreased2);
 
 		// 5. Increase salary by 10% only for IT department
 		List<EmployeeTest> itEmpSalaryIncrease = employees.stream().map(e -> {
@@ -109,18 +110,17 @@ public class EmployeeJava8Features {
 			}
 			return e;
 		}).toList();
-		System.out.println(itEmpSalaryIncrease);
+		System.out.println("itEmpSalaryIncrease:: "+itEmpSalaryIncrease);
 
 		
 		// 6. department wise salary hike
 		List<EmployeeTest> departmentwiseIncrement = employees.stream().map(e -> {
 			double increment = 0;
 			switch (e.getDepartment()) {
-			case "IT" -> increment = 0.20;
-			case "HR" -> increment = 0.10;
-			case "Finance" -> increment = 0.15;
+				case "IT" -> increment = 0.20;
+				case "HR" -> increment = 0.10;
+				case "Finance" -> increment = 0.15;
 			}
-
 			return new EmployeeTest(e.getId(), e.getName(), e.getSalary() * (1 + increment), e.getDepartment(),
 					e.getContacts());
 		}).toList();
@@ -133,14 +133,14 @@ public class EmployeeJava8Features {
 				.mapToDouble(e->e.getSalary())
 				.average()
 				.orElse(0);
-		System.out.println(avgSal);
+		System.out.println("avgSal:: "+avgSal);
 		
 		
 		//2. remove duplicate contacts
 		Set<Integer> uniqueContact = employees.stream()
 				.flatMap(e->e.getContacts().stream())
 				.collect(Collectors.toSet());
-		System.out.println(uniqueContact);
+		System.out.println("uniqueContacts:: "+uniqueContact);
 		
 		
 		//3. convert employee list to map
@@ -163,21 +163,18 @@ public class EmployeeJava8Features {
 		
 		
 		//6. find employee with longest name if longest name has duplicate print both.
-		employees.stream()
+		List<EmployeeTest> value = employees.stream()
 		.collect(Collectors.groupingBy(e->e.getName().length()))
 		.entrySet()
 		.stream()
 		.max(Map.Entry.comparingByKey())
 		.get()
-		.getValue()
-		.forEach(System.out::println);
-		
-		
+		.getValue();
+		System.out.println("value:: "+value);
+		 
 		//1.sort multiple fields 
 		List<EmployeeTest> sortedEmployees = employees.stream()
-		                 .sorted(Comparator
-		                 .comparing(EmployeeTest::getDepartment)
-		                 .thenComparing(EmployeeTest::getSalary).reversed())
+		                 .sorted(Comparator.comparing(EmployeeTest::getDepartment).thenComparing(EmployeeTest::getSalary).reversed())
 		                 .toList();
 		System.out.println(sortedEmployees);
 		
@@ -197,6 +194,7 @@ public class EmployeeJava8Features {
 		long count = employees.stream().map(e->e.getDepartment()).distinct().count();
 		if (count == 1) System.out.println("All Emps belong to same dept");
 		else System.out.println("Employees have different dept");
+		System.out.println(count);
 		
 		
 		//4 Sum total salary of each dept

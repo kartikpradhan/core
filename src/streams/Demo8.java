@@ -18,6 +18,7 @@ public class Demo8 {
 			map.put(ch, map.getOrDefault(ch, 0) + 1);
 		}
 
+		System.out.println(map);
 		Optional<Entry<String, Integer>> entry = map.entrySet().stream()
 				.sorted(Entry.comparingByValue(Comparator.reverseOrder())).findFirst();
 		System.out.println(entry.get().getKey());

@@ -97,7 +97,7 @@ public class EmployeeJava8 {
 		
 		// Question 3: Group employees by department
 		Map<String, List<Employee>> collect = emps.stream().collect(Collectors.groupingBy(Employee::getDepartment));
-		System.out.println(collect);
+		System.out.println("="+collect);
 		
 		
 		// Question 4: Find the highest paid employee
@@ -113,6 +113,15 @@ public class EmployeeJava8 {
 		
 		//find duplicate employee names
 		Set<String> dupEmployess = emps.stream()
+				.map(e->e.getName())
+				.collect(Collectors.groupingBy(e->e, Collectors.counting()))
+				.entrySet()
+				.stream()
+				.filter(e->e.getValue() >1)
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toSet());
+		//or
+		Set<String> dupEmployess2 = emps.stream()
 				.collect(Collectors.groupingBy(Employee::getName, Collectors.counting()))
 				.entrySet()
 				.stream()
@@ -120,11 +129,11 @@ public class EmployeeJava8 {
 				.map(Map.Entry::getKey)
 				.collect(Collectors.toSet());
 				
-		System.out.println(dupEmployess);
+		System.out.println("dupEmployess:: "+dupEmployess);
 		
 		//Find employee count for each department
 		Map<String, Long> empCountPerDept = emps.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
-		System.out.println(empCountPerDept);
+		System.out.println("empCountPerDept:: "+empCountPerDept);
 		
 		
 		//Sum salary of each department
@@ -137,7 +146,7 @@ public class EmployeeJava8 {
 		.sorted(Comparator.reverseOrder())
 		.limit(3)
 		.collect(Collectors.toList());
-		System.out.println(top3Salary);
+		System.out.println("top3Salary:: "+top3Salary);
 		
 		//Get nth highest salary
 		int n=1; //dynamic value
@@ -153,14 +162,14 @@ public class EmployeeJava8 {
 		 .map(emp->emp.getName() + ":" + emp.getSalary())
 		 .findFirst()
 		 .get();
-		System.out.println(empNameWithNthSal);
+		System.out.println("empNameWithNthSal:: "+empNameWithNthSal);
 		
 		Employee employee = emps.stream().filter(emp->emp.getSalary()==nthSal).findFirst().get();
 		System.out.println(employee);
 		
 		//Get comma separated employee name
 		String commaSeparateName = emps.stream().map(e->e.getName()).collect(Collectors.joining(","));
-		System.out.println(commaSeparateName);
+		System.out.println("commaSeparateName:: "+commaSeparateName);
 		
 		
 		//Get youngest employee in each dept
@@ -170,7 +179,7 @@ public class EmployeeJava8 {
 		youngestEmpEachDept.entrySet().stream().forEach(System.out::println);
 		
 		
-		//Get youngest employee in each dept
+		//Get Oldest employee in each dept
 		Map<String, Optional<Employee>> oldestEmpEachDept = emps.stream()
 				.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.maxBy(Comparator.comparing(Employee::getAge))));
 					

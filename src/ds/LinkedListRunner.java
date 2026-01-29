@@ -13,7 +13,6 @@ class Node {
 	public String toString() {
 		return "Node [data=" + data + ", next=" + next + "]";
 	}
-
 }
 
 class LinkedListRunner {
@@ -39,7 +38,6 @@ class LinkedListRunner {
 	// Delete a node by key
 	public void delete(int key) {
 		Node temp = head;
-		Node prev = null;
 
 		// If head node holds the key
 		if (temp != null && temp.data == key) {
@@ -48,6 +46,7 @@ class LinkedListRunner {
 		}
 
 		// Search for the key
+		Node prev = null;
 		while (temp != null && temp.data != key) {
 			prev = temp;
 			temp = temp.next;

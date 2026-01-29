@@ -17,7 +17,7 @@ public class Demo17 {
 		map.put(5, 19);
 		
 		int intValue = map.entrySet().stream().map(e->e.getValue()).reduce(0, (n1, n2) -> n1 + n2).intValue();
-		//System.out.println(intValue);
+		System.out.println(intValue);
 		
 		//create pojo emp, sort on the basis of sal and age
 		List<Emp> empList = Arrays.asList(new Emp(32, 45000),
