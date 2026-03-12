@@ -3,7 +3,7 @@ package java17;
 public class RecordRunner {
 
 	public static void main(String[] args) {
-		EmployeeRecord record = new EmployeeRecord("kartik", 15);
+		EmployeeRecord record = new EmployeeRecord("kartik", 25);
 		EmployeeRecord record2 = new EmployeeRecord();
 		
 		System.out.println(record);

@@ -23,8 +23,13 @@ public class ConcurrentModificationExcetionTest extends Thread {
 		list.add("B");
 		new ConcurrentModificationExcetionTest().start();
 		Iterator<String> itr = list.iterator();
-		while (itr.hasNext()) {
-			System.out.println(itr.next());
+//		while (itr.hasNext()) {
+//			System.out.println(itr.next());
+//			Thread.sleep(3000);
+//		}
+		//or
+		for (String s: list) {
+			System.out.println(list.get(1));
 			Thread.sleep(3000);
 		}
 		System.out.println(list);

@@ -43,7 +43,7 @@ public class CompletableFutureDemo {
 		
 		//combining in a single line but works as sequential
 //		String fullName = CompletableFuture.supplyAsync(()->demo.getFirstName())
-//				.thenApplyAsync(firstName -> firstName + " " + demo.getLastName()).join(); //it will take 4 sec as it will supplyAsync then start thenApplyAsync
+//				.thenApplyAsync(firstName -> firstName + " " + demo.getLastName()).join(); //it will take 4 sec as it will call supplyAsync then start thenApplyAsync
 //		System.out.println(fullName);
 		
 		System.out.println("Time Taken to execute: " + (System.currentTimeMillis() - milliSecs));
